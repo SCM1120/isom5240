@@ -15,11 +15,13 @@ def load_pipelines():
     # 1. 图像分类 (Swin-Tiny)
     classifier = pipeline("image-classification", model="JescYip/Swin-Tiny")
     
-    # 2. 图像描述 (BLIP)
-    captioner = pipeline("image-text-to-text", model="nlpconnect/vit-gpt2-image-captioning")
+    # 2. 图像描述 (BLIP) — use "image-to-text", not "image-text-to-text"
+    captioner = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
    
     # 3. 广告生成 (GPT-2)
     ad_generator = pipeline("text-generation", model="SCM1120/gpt2-ad-finetuned")
+
+    
 
     return classifier, captioner, ad_generator
     
