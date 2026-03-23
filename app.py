@@ -16,7 +16,7 @@ def load_pipelines():
     classifier = pipeline("image-classification", model="JescYip/Swin-Tiny")
     
     # 2. 图像描述 (BLIP)
-    captioner = pipeline("image-text-to-text", model="microsoft/git-base")
+    captioner = pipeline("image-text-to-text", model="Salesforce/blip-image-captioning-base")
     
     # 3. 广告生成 (GPT-2)
     ad_generator = pipeline("text-generation", model="SCM1120/gpt2-ad-finetuned")
