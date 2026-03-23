@@ -55,12 +55,12 @@ if uploaded_file is not None:
                 {
                     "role": "user",
                     "content": [
-                        {"type": "image"},
+                        {"type": "image", "image": image},
                         {"type": "text", "text": "Describe this product in detail."}
                     ]
                 }
             ]
-            cap_results = v_captioner(text=messages, images=image, max_new_tokens=100, return_full_text=False)
+            cap_results = v_captioner(text=messages, max_new_tokens=100, return_full_text=False)
             full_description = cap_results[0]['generated_text']
             keywords = ", ".join(full_description.split()[:10]) # 提取前10个词以提供更多上下文
 
