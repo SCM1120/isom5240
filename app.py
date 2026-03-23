@@ -7,7 +7,7 @@ import torch
 st.set_page_config(page_title="ISOM5240 Retail AI Assistant", page_icon="🛍️", layout="wide")
 
 st.title("🛍️ Intelligent Retail Marketing Assistant (Pro Version)")
-st.write("Integrated multimodal automatic marketing system with Swin-Transformer, BLIP-large, and GPT-2.")
+st.write("Integrated multimodal automatic marketing system with Swin-Transformer, GIT-large, and GPT-2.")
 
 # --- 1. 加载模型 (Pipeline 集成) ---
 @st.cache_resource
@@ -15,8 +15,8 @@ def load_pipelines():
     # 1. 图像分类 (Swin-Tiny)
     classifier = pipeline("image-classification", model="JescYip/Swin-Tiny")
     
-    # 2. 图像描述 (BLIP-large) — 轻量替换自 blip2-opt-2.7b
-    captioner = pipeline("image-to-text", model="Salesforce/blip-image-captioning-large")
+    # 2. 图像描述 (GIT-large) — 轻量 image-text-to-text (~750MB)
+    captioner = pipeline("image-text-to-text", model="microsoft/git-large")
     
     # 3. 广告生成 (GPT-2)
     ad_generator = pipeline("text-generation", model="SCM1120/gpt2-ad-finetuned")
@@ -50,8 +50,8 @@ if uploaded_file is not None:
             cls_confidence = cls_results[0]['score']
         
         # --- B. 运行 BLIP-2 生成描述 ---
-        with st.spinner('BLIP-large generating visual description...'):
-            cap_results = v_captioner(image)
+        with st.spinner('GIT-large generating visual description...'):
+            cap_results = v_captioner(image, text="")
             # 获取完整描述用于广告生成
             full_description = cap_results[0]['generated_text']
             keywords = ", ".join(full_description.split()[:10]) # 提取前10个词以提供更多上下文
@@ -102,6 +102,6 @@ if uploaded_file is not None:
     with st.expander("View Project Technical Architecture (Technical Pipeline Logic)"):
         st.markdown(f"""
         1.  **Swin-Tiny (Vision)**: Employs hierarchical Transformer architecture for precise 3-category classification of products (tops/bottoms/shoes).
-        2.  **BLIP-large (Visual-Language)**: Lightweight captioning model (`Salesforce/blip-image-captioning-large`, ~900MB), converting image features into visual descriptions for ad generation.
+        2.  **GIT-large (Visual-Language)**: Lightweight captioning model (`microsoft/git-large`, ~750MB), generating visual descriptions via image-text-to-text pipeline within Streamlit Cloud free tier memory limits.
         3.  **GPT-2 (Generative AI)**: Receives `Category + Description` multidimensional input, generating e-commerce compliant marketing copy through autoregression.
         """)
