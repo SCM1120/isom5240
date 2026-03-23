@@ -5,5 +5,4 @@ pillow
 accelerate
 datasets
 evaluate
-torchvision
-accelerate
+
